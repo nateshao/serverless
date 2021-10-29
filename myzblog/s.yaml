@@ -1,0 +1,33 @@
+# Zblog框架参考文档：https://github.com/devsapp/zblog
+
+edition: 1.0.0          #  命令行YAML规范版本，遵循语义化版本（Semantic Versioning）规范
+name: zblogApp       #  项目名称
+access: "default"  #  秘钥别名
+
+services:
+  framework-test: # 服务名称
+    component: devsapp/zblog  # 组件名称
+
+    props: # 组件的属性值
+      region: cn-shenzhen
+      service:
+        name: serverless-devs-zblog
+        description: 'Serverless Devs示例: Zblog framework service'
+      function:
+        name: zblog
+        description: 'Serverless Devs示例: Zblog framework function'
+        memorySize: 512
+        caPort: 8080
+        customContainerConfig:
+          command: '["/mnt/auto/zblog/scripts/start.sh"]' # 代码包传入 nas 部署
+          # command: '["./scripts/start.sh"]' # 代码包直接放入 container
+        code:
+          src: ./code
+          excludes:
+            - .s
+      customDomains:
+        - domainName: auto
+          protocol: HTTP
+          routeConfigs:
+            - path: '/*'
+
